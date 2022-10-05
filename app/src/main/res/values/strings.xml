@@ -1,0 +1,18 @@
+<resources>
+    <!-- Title for the application. -->
+    <string name="app_name">Yoruba Language</string>
+
+    <!-- Category name for phrases  -->
+    <string name="category_phrases">Phrases</string>
+
+    <!-- Category name for the vocabulary words for colors  -->
+    <string name="category_colors">Colors</string>
+
+    <!-- Category name for the vocabulary words for numbers -->
+    <string name="category_numbers">Numbers</string>
+
+    <!-- Category name for the vocabulary words for family members  -->
+    <string name="category_family">Family</string>
+    <string name="dummy_image">dummy_image</string>
+    <string name="play_arrow">play arrow</string>
+</resources>

@@ -2,17 +2,20 @@ package com.example.language
 
 import android.annotation.TargetApi
 import android.content.Context
+import android.media.AudioAttributes
 import android.media.AudioFocusRequest
 import android.media.AudioManager
 import android.media.MediaPlayer
 import android.os.Build
 import android.os.Bundle
+import android.os.Handler
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.ListView
+import androidx.annotation.RequiresApi
 
 class PhrasesFragment : Fragment() {
     //init MediaPlayer
@@ -33,27 +36,32 @@ class PhrasesFragment : Fragment() {
      * (i.e., we gain or lose audio focus because of another app or device).
      */
     private var audioFocusChangeListener = AudioManager.OnAudioFocusChangeListener { focusChange ->
-        if (focusChange == AudioManager.AUDIOFOCUS_LOSS_TRANSIENT || focusChange == AudioManager.AUDIOFOCUS_LOSS_TRANSIENT_CAN_DUCK) {
-            // The AUDIOFOCUS_LOSS_TRANSIENT case means that we've lost audio focus for a
-            // short amount of time. The AUDIOFOCUS_LOSS_TRANSIENT_CAN_DUCK case means that
-            // our app is allowed to continue playing sound but at a lower volume. We'll treat
-            // both cases the same way because our app is playing short sound files.
+        when (focusChange) {
+            AudioManager.AUDIOFOCUS_LOSS_TRANSIENT, AudioManager.AUDIOFOCUS_LOSS_TRANSIENT_CAN_DUCK -> {
+                // The AUDIOFOCUS_LOSS_TRANSIENT case means that we've lost audio focus for a
+                // short amount of time. The AUDIOFOCUS_LOSS_TRANSIENT_CAN_DUCK case means that
+                // our app is allowed to continue playing sound but at a lower volume. We'll treat
+                // both cases the same way because our app is playing short sound files.
 
-            // Pause playback and reset player to the start of the file. That way, we can
-            // play the word from the beginning when we resume playback.
-            mMediaPlayer?.pause()
-            mMediaPlayer?.seekTo(0)
-        } else if (focusChange == AudioManager.AUDIOFOCUS_GAIN) {
-            // The AUDIOFOCUS_GAIN case means we have regained focus and can resume playback.
-            mMediaPlayer?.start()
-        } else if (focusChange == AudioManager.AUDIOFOCUS_LOSS) {
-            // The AUDIOFOCUS_LOSS case means we've lost audio focus and
-            // Stop playback and clean up resources
-            releaseMediaPlayer()
+                // Pause playback and reset player to the start of the file. That way, we can
+                // play the word from the beginning when we resume playback.
+                mMediaPlayer?.pause()
+                mMediaPlayer?.seekTo(0)
+            }
+            AudioManager.AUDIOFOCUS_GAIN -> {
+                // The AUDIOFOCUS_GAIN case means we have regained focus and can resume playback.
+                mMediaPlayer?.start()
+            }
+            AudioManager.AUDIOFOCUS_LOSS -> {
+                // The AUDIOFOCUS_LOSS case means we've lost audio focus and
+                // Stop playback and clean up resources
+                releaseMediaPlayer()
+            }
         }
     }
 
 
+    @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreateView(
         inflater : LayoutInflater, container : ViewGroup?,
         savedInstanceState : Bundle?
@@ -62,6 +70,17 @@ class PhrasesFragment : Fragment() {
         val rootView = inflater.inflate(R.layout.word_list, container, false)
 
         val mAudioManager = activity?.getSystemService(Context.AUDIO_SERVICE) as AudioManager
+        //
+        focusRequest = AudioFocusRequest.Builder(AudioManager.AUDIOFOCUS_GAIN).run {
+            setAudioAttributes(AudioAttributes.Builder().run {
+                setUsage(AudioAttributes.USAGE_MEDIA)
+                setContentType(AudioAttributes.CONTENT_TYPE_MUSIC)
+                build()
+            })
+            setAcceptsDelayedFocusGain(true)
+            setOnAudioFocusChangeListener(audioFocusChangeListener, Handler())
+            build()
+        }
 
         val numberArray : ArrayList<Word> = arrayListOf()
 
@@ -134,6 +153,7 @@ class PhrasesFragment : Fragment() {
 
         return rootView
     }
+
     /**
      * onStop method to stop the audio if the user stop interacting with the app
      */

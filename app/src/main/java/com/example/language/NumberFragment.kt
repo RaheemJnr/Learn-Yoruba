@@ -77,7 +77,7 @@ class NumberFragment : Fragment() {
 
 
         val mAudioManager = activity?.getSystemService(Context.AUDIO_SERVICE) as AudioManager
-        //
+        // // setup focus request
         focusRequest = AudioFocusRequest.Builder(AudioManager.AUDIOFOCUS_GAIN).run {
             setAudioAttributes(AudioAttributes.Builder().run {
                 setUsage(AudioAttributes.USAGE_MEDIA)

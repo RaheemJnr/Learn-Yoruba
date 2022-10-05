@@ -67,6 +67,7 @@ class FamilyFragment : Fragment() {
         val rootView = inflater.inflate(R.layout.word_list, container, false)
 
         val mAudioManager = activity?.getSystemService(Context.AUDIO_SERVICE) as AudioManager
+        // setup focus request
         focusRequest = AudioFocusRequest.Builder(AudioManager.AUDIOFOCUS_GAIN).run {
             setAudioAttributes(AudioAttributes.Builder().run {
                 setUsage(AudioAttributes.USAGE_MEDIA)
@@ -78,7 +79,7 @@ class FamilyFragment : Fragment() {
             build()
         }
 
-        val numberArray  :ArrayList<Word> = arrayListOf()
+        val numberArray : ArrayList<Word> = arrayListOf()
 
         itemsToDisplay(numberArray)
 
@@ -88,40 +89,41 @@ class FamilyFragment : Fragment() {
 
         //it then find the list to use by id in the layout.xml
         // and populate it
-        val listView: ListView = rootView.findViewById(R.id.list)
+        val listView : ListView = rootView.findViewById(R.id.list)
         listView.adapter = itemAdapter
 
-        listView.onItemClickListener = AdapterView.OnItemClickListener { _ : AdapterView<*>, _ : View, i: Int, _ : Long ->
+        listView.onItemClickListener =
+            AdapterView.OnItemClickListener { _ : AdapterView<*>, _ : View, i : Int, _ : Long ->
 
-            // Get the {@link Word} object at the given position the user clicked on
-            val word: Word = numberArray[i]
-            //release current audio before playing another one
-            releaseMediaPlayer()
-            val result : Int
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                @TargetApi(Build.VERSION_CODES.O)
-                result = focusRequest?.let { mAudioManager.requestAudioFocus(it) }!!
-            } else {
-                @Suppress("DEPRECATION")
-                result = mAudioManager.requestAudioFocus(
-                    audioFocusChangeListener,
-                    //use music stream
-                    AudioManager.STREAM_MUSIC,
-                    // use audio for short period of time
-                    AudioManager.AUDIOFOCUS_GAIN_TRANSIENT
-                )
+                // Get the {@link Word} object at the given position the user clicked on
+                val word : Word = numberArray[i]
+                //release current audio before playing another one
+                releaseMediaPlayer()
+                val result : Int
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                    @TargetApi(Build.VERSION_CODES.O)
+                    result = focusRequest?.let { mAudioManager.requestAudioFocus(it) }!!
+                } else {
+                    @Suppress("DEPRECATION")
+                    result = mAudioManager.requestAudioFocus(
+                        audioFocusChangeListener,
+                        //use music stream
+                        AudioManager.STREAM_MUSIC,
+                        // use audio for short period of time
+                        AudioManager.AUDIOFOCUS_GAIN_TRANSIENT
+                    )
+                }
+                // if the request is granted do this
+                if (result == AudioManager.AUDIOFOCUS_REQUEST_GRANTED) {
+                    // Start playback
+                    //play the media file that correspond to the position
+                    mMediaPlayer = MediaPlayer.create(activity, word.getAudioResource())
+                    //play audio
+                    mMediaPlayer?.start()
+                    //callBack function which call the release function when audio finish playing
+                    mMediaPlayer?.setOnCompletionListener(completedAudio)
+                }
             }
-            // if the request is granted do this
-            if (result == AudioManager.AUDIOFOCUS_REQUEST_GRANTED) {
-                // Start playback
-                //play the media file that correspond to the position
-                mMediaPlayer = MediaPlayer.create(activity, word.getAudioResource())
-                //play audio
-                mMediaPlayer?.start()
-                //callBack function which call the release function when audio finish playing
-                mMediaPlayer?.setOnCompletionListener(completedAudio)
-            }
-        }
 
         return rootView
     }

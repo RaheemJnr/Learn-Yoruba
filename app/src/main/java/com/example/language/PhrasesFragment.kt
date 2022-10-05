@@ -70,7 +70,7 @@ class PhrasesFragment : Fragment() {
         val rootView = inflater.inflate(R.layout.word_list, container, false)
 
         val mAudioManager = activity?.getSystemService(Context.AUDIO_SERVICE) as AudioManager
-        //
+        // setup focus request
         focusRequest = AudioFocusRequest.Builder(AudioManager.AUDIOFOCUS_GAIN).run {
             setAudioAttributes(AudioAttributes.Builder().run {
                 setUsage(AudioAttributes.USAGE_MEDIA)

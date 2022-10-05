@@ -2,16 +2,19 @@ package com.example.language
 
 import android.annotation.TargetApi
 import android.content.Context
+import android.media.AudioAttributes
 import android.media.AudioFocusRequest
 import android.media.AudioManager
 import android.media.MediaPlayer
 import android.os.Build
 import android.os.Bundle
+import android.os.Handler
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.ListView
+import androidx.annotation.RequiresApi
 import androidx.fragment.app.Fragment
 
 
@@ -55,6 +58,7 @@ class ColorFragment : Fragment() {
         }
     }
 
+    @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreateView(
         inflater : LayoutInflater, container : ViewGroup?,
         savedInstanceState : Bundle?
@@ -63,6 +67,16 @@ class ColorFragment : Fragment() {
         val rootView = inflater.inflate(R.layout.word_list, container, false)
         // audio manager
         val mAudioManager = activity?.getSystemService(Context.AUDIO_SERVICE) as AudioManager
+        focusRequest = AudioFocusRequest.Builder(AudioManager.AUDIOFOCUS_GAIN).run {
+            setAudioAttributes(AudioAttributes.Builder().run {
+                setUsage(AudioAttributes.USAGE_MEDIA)
+                setContentType(AudioAttributes.CONTENT_TYPE_MUSIC)
+                build()
+            })
+            setAcceptsDelayedFocusGain(true)
+            setOnAudioFocusChangeListener(audioFocusChangeListener, Handler())
+            build()
+        }
 
         val numberArray : ArrayList<Word> = arrayListOf()
 
@@ -83,7 +97,6 @@ class ColorFragment : Fragment() {
         // and populate it
         val listView : ListView = rootView.findViewById(R.id.list)
         listView.adapter = itemAdapter
-
 
 
         // create an on click listener for every list item in on the screen and assign the right

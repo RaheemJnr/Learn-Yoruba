@@ -70,7 +70,8 @@ class NumberFragment : Fragment() {
      */
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreateView(
-        inflater : LayoutInflater, container : ViewGroup?, savedInstanceState : Bundle?) : View? {
+        inflater : LayoutInflater, container : ViewGroup?, savedInstanceState : Bundle?
+    ) : View? {
         // Inflate the layout for this fragment
         val rootView = inflater.inflate(R.layout.word_list, container, false)
 
@@ -79,7 +80,7 @@ class NumberFragment : Fragment() {
         //
         focusRequest = AudioFocusRequest.Builder(AudioManager.AUDIOFOCUS_GAIN).run {
             setAudioAttributes(AudioAttributes.Builder().run {
-                setUsage(AudioAttributes.USAGE_GAME)
+                setUsage(AudioAttributes.USAGE_MEDIA)
                 setContentType(AudioAttributes.CONTENT_TYPE_MUSIC)
                 build()
             })

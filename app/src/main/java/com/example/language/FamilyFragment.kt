@@ -69,7 +69,7 @@ class FamilyFragment : Fragment() {
         val mAudioManager = activity?.getSystemService(Context.AUDIO_SERVICE) as AudioManager
         focusRequest = AudioFocusRequest.Builder(AudioManager.AUDIOFOCUS_GAIN).run {
             setAudioAttributes(AudioAttributes.Builder().run {
-                setUsage(AudioAttributes.USAGE_GAME)
+                setUsage(AudioAttributes.USAGE_MEDIA)
                 setContentType(AudioAttributes.CONTENT_TYPE_MUSIC)
                 build()
             })

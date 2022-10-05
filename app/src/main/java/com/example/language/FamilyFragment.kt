@@ -2,17 +2,20 @@ package com.example.language
 
 import android.annotation.TargetApi
 import android.content.Context
+import android.media.AudioAttributes
 import android.media.AudioFocusRequest
 import android.media.AudioManager
 import android.media.MediaPlayer
 import android.os.Build
 import android.os.Bundle
+import android.os.Handler
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.ListView
+import androidx.annotation.RequiresApi
 
 
 class FamilyFragment : Fragment() {
@@ -55,6 +58,7 @@ class FamilyFragment : Fragment() {
     }
 
 
+    @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreateView(
         inflater : LayoutInflater, container : ViewGroup?,
         savedInstanceState : Bundle?
@@ -63,22 +67,20 @@ class FamilyFragment : Fragment() {
         val rootView = inflater.inflate(R.layout.word_list, container, false)
 
         val mAudioManager = activity?.getSystemService(Context.AUDIO_SERVICE) as AudioManager
+        focusRequest = AudioFocusRequest.Builder(AudioManager.AUDIOFOCUS_GAIN).run {
+            setAudioAttributes(AudioAttributes.Builder().run {
+                setUsage(AudioAttributes.USAGE_GAME)
+                setContentType(AudioAttributes.CONTENT_TYPE_MUSIC)
+                build()
+            })
+            setAcceptsDelayedFocusGain(true)
+            setOnAudioFocusChangeListener(audioFocusChangeListener, Handler())
+            build()
+        }
 
         val numberArray  :ArrayList<Word> = arrayListOf()
 
-        numberArray.add(Word("Father", "baba", R.drawable.family_father, R.raw.father))
-        numberArray.add(Word("Mother", "iya", R.drawable.family_mother, R.raw.mother))
-        numberArray.add(Word("Sister", "egbon obinrin", R.drawable.family_older_sister, R.raw.sister))
-        numberArray.add(Word("brother", "egbon okunrin", R.drawable.family_older_brother, R.raw.brother))
-        numberArray.add(Word("niece", "omo egbon obinrin", R.drawable.family_younger_sister, R.raw.niece))
-        numberArray.add(Word( "cousin","omo egbon okunrin", R.drawable.family_younger_brother, R.raw.cousin))
-        numberArray.add(Word( "grandfather","baba baba", R.drawable.family_grandfather, R.raw.grandfather))
-        numberArray.add(Word( "grandmother","iya iya", R.drawable.family_grandmother, R.raw.grandmother))
-        numberArray.add(Word( "uncle","egbon/aburo iya/baba nii okunrin", R.drawable.family_older_brother, R.raw.uncle))
-        numberArray.add(Word( "aunt","egbon/aburo iya/baba nii obinrin", R.drawable.family_older_sister, R.raw.aunt))
-        numberArray.add(Word( "siblings","omo iya ati baba mii", R.drawable.family_younger_sister, R.raw.siblings))
-        numberArray.add(Word( "step brother","omo baba tabi iya mii okunrin", R.drawable.family_older_brother, R.raw.stepbrother))
-        numberArray += Word( "step sister","omo baba tabi iya mii obinrin", R.drawable.family_older_sister, R.raw.stepsister)
+        itemsToDisplay(numberArray)
 
 
         // adapter view create a layout for the arrays using simple_list_item_1
@@ -123,6 +125,98 @@ class FamilyFragment : Fragment() {
 
         return rootView
     }
+
+    private fun itemsToDisplay(numberArray : ArrayList<Word>) {
+        numberArray.add(Word("Father", "baba", R.drawable.family_father, R.raw.father))
+        numberArray.add(Word("Mother", "iya", R.drawable.family_mother, R.raw.mother))
+        numberArray.add(
+            Word(
+                "Sister",
+                "egbon obinrin",
+                R.drawable.family_older_sister,
+                R.raw.sister
+            )
+        )
+        numberArray.add(
+            Word(
+                "brother",
+                "egbon okunrin",
+                R.drawable.family_older_brother,
+                R.raw.brother
+            )
+        )
+        numberArray.add(
+            Word(
+                "niece",
+                "omo egbon obinrin",
+                R.drawable.family_younger_sister,
+                R.raw.niece
+            )
+        )
+        numberArray.add(
+            Word(
+                "cousin",
+                "omo egbon okunrin",
+                R.drawable.family_younger_brother,
+                R.raw.cousin
+            )
+        )
+        numberArray.add(
+            Word(
+                "grandfather",
+                "baba baba",
+                R.drawable.family_grandfather,
+                R.raw.grandfather
+            )
+        )
+        numberArray.add(
+            Word(
+                "grandmother",
+                "iya iya",
+                R.drawable.family_grandmother,
+                R.raw.grandmother
+            )
+        )
+        numberArray.add(
+            Word(
+                "uncle",
+                "egbon/aburo iya/baba nii okunrin",
+                R.drawable.family_older_brother,
+                R.raw.uncle
+            )
+        )
+        numberArray.add(
+            Word(
+                "aunt",
+                "egbon/aburo iya/baba nii obinrin",
+                R.drawable.family_older_sister,
+                R.raw.aunt
+            )
+        )
+        numberArray.add(
+            Word(
+                "siblings",
+                "omo iya ati baba mii",
+                R.drawable.family_younger_sister,
+                R.raw.siblings
+            )
+        )
+        numberArray.add(
+            Word(
+                "step brother",
+                "omo baba tabi iya mii okunrin",
+                R.drawable.family_older_brother,
+                R.raw.stepbrother
+            )
+        )
+        numberArray += Word(
+            "step sister",
+            "omo baba tabi iya mii obinrin",
+            R.drawable.family_older_sister,
+            R.raw.stepsister
+        )
+    }
+
     /**
      * onStop method to stop the audio if the user stop interacting with the app
      */

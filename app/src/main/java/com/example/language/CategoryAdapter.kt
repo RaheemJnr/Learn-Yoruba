@@ -17,7 +17,7 @@ import androidx.fragment.app.FragmentPagerAdapter
  *           across swipes.
  */
 @Suppress("DEPRECATION")
-class CategoryAdapter(var context : Context, fragmentManager : FragmentManager) :
+class CategoryAdapter(private var context : Context, fragmentManager : FragmentManager) :
     FragmentPagerAdapter(fragmentManager) {
 
     /**
@@ -47,7 +47,7 @@ class CategoryAdapter(var context : Context, fragmentManager : FragmentManager) 
         return 4
     }
 
-    override fun getPageTitle(position: Int): CharSequence? {
+    override fun getPageTitle(position: Int): CharSequence {
         return when (position) {
             0 -> {
                 context.getString(R.string.category_numbers)

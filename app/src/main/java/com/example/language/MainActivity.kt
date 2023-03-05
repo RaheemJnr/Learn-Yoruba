@@ -3,15 +3,19 @@ package com.example.language
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.viewpager.widget.ViewPager
+import com.example.language.databinding.ActivityMainBinding
 import com.google.android.material.tabs.TabLayout
-import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity() {
+
+    private lateinit var binding : ActivityMainBinding
     override fun onCreate(savedInstanceState : Bundle?) {
         super.onCreate(savedInstanceState)
 
+        binding = ActivityMainBinding.inflate(layoutInflater)
+        val view = binding.root
         // Set the content of the activity to use the activity_main.xml layout file
-        setContentView(R.layout.activity_main)
+        setContentView(view)
 
         // Find the view pager that will allow the user to swipe between fragments
         val viewPager = findViewById<ViewPager>(R.id.pager)
@@ -30,7 +34,7 @@ class MainActivity : AppCompatActivity() {
         //   2. Update the view pager when a tab is selected
         //   3. Set the tab layout's tab names with the view pager's adapter's titles
         //      by calling onPageTitle()
-        tabLayout.setupWithViewPager(pager)
+        tabLayout.setupWithViewPager(binding.pager)
 
 
     }

@@ -96,7 +96,7 @@ class NumberFragment : Fragment() {
 
 
         // adapter view create a layout for the arrays using simple_list_item_1
-        val itemAdapter = WordAdapter(activity!!, numberArray, R.color.category_numbers)
+        val itemAdapter = WordAdapter(requireActivity(), numberArray, R.color.category_numbers)
 
         //it then find the list to use by id in the layout.xml
         // and populate it

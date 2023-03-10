@@ -62,6 +62,12 @@ fun LanguageScreen() {
                 1 -> {
                     Text(text = "$page")
                 }
+                2 -> {
+                    Text(text = "$page")
+                }
+                3 -> {
+                    Text(text = "$page")
+                }
             }
         }
 

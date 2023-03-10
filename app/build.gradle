@@ -48,7 +48,6 @@ dependencies {
     implementation "androidx.navigation:navigation-compose:$nav_version"
 
     //carousel pager
-   // implementation "com.google.accompanist:accompanist-pager:0.23.0"
     implementation "com.google.accompanist:accompanist-pager-indicators:0.23.0"
 
 

@@ -1,4 +1,4 @@
-package com.rjnr6.statussaver.ui.theme
+package com.example.language.ui.theme
 
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp

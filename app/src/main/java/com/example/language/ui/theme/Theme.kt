@@ -1,45 +1,12 @@
-package com.rjnr6.statussaver.ui.theme
+package com.example.language.ui.theme
 
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material3.darkColorScheme
 import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
 import com.example.language.ui.theme.*
-
-//private val DarkColorPalette = darkColors(
-//    primary = PrimaryColor,
-//    onPrimary = PrimaryTextColor,
-//    secondary = SecondaryLightColor,
-//    onSecondary = SecondaryTextColor,
-//    background = BackgroundDarkColor,
-//    onBackground = Color.White,
-//    surface = SurfaceDark,
-//    onSurface = Color.White,
-//    error = ErrorColor,
-//    onError = OnErrorColor
-//)
-//
-//private val LightColorPalette = lightColors(
-//    primary = PrimaryColor,
-//    onPrimary = PrimaryTextColor,
-//    secondary = SecondaryColor,
-//    onSecondary = SecondaryTextColor,
-//    background = BackgroundLightColor,
-//    onBackground = Color.Black,
-//    surface = SurfaceLight,
-//    onSurface = Color.Black,
-//    error = ErrorColor,
-//    onError = OnErrorColor
-//
-//    /* Other default colors to override
-//    background = Color.White,
-//    surface = Color.White,
-//    onPrimary = Color.White,
-//    onSecondary = Color.Black,
-//    onBackground = Color.Black,
-//    onSurface = Color.Black,
-//    */
-//)
+import com.rjnr6.statussaver.ui.theme.Typography
+import org.intellij.lang.annotations.Language
 
 private val LightColors = lightColorScheme(
     primary = md_theme_light_primary,
@@ -107,7 +74,7 @@ private val DarkColors = darkColorScheme(
 )
 
 @Composable
-fun StatusSaverTheme(
+fun LanguageTheme(
     useDarkTheme: Boolean = isSystemInDarkTheme(),
     content: @Composable () -> Unit
 ) {

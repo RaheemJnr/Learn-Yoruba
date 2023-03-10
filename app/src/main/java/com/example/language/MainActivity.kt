@@ -1,16 +1,22 @@
 package com.example.language
 
 import android.os.Bundle
+import androidx.activity.ComponentActivity
+import androidx.activity.compose.setContent
 import androidx.appcompat.app.AppCompatActivity
 import androidx.viewpager.widget.ViewPager
 import com.example.language.databinding.ActivityMainBinding
 import com.google.android.material.tabs.TabLayout
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : ComponentActivity() {
 
     private lateinit var binding : ActivityMainBinding
     override fun onCreate(savedInstanceState : Bundle?) {
         super.onCreate(savedInstanceState)
+
+        setContent() {
+
+        }
 
         binding = ActivityMainBinding.inflate(layoutInflater)
         val view = binding.root

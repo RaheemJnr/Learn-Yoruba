@@ -6,6 +6,7 @@ import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.example.language.ui.screen.LanguageScreen
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 
 
@@ -20,7 +21,7 @@ fun MainScreenNavigation() {
     NavHost(navController, startDestination = MainScreen.Numbers.route) {
         //Number
         composable(MainScreen.Numbers.route) {
-
+            LanguageScreen()
         }
 
     }
